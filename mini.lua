@@ -9,7 +9,7 @@ local RunService = game:GetService("RunService")
 local lighting=game:GetService("Lighting")
 print("player name is "..plr.Name)
 
--- Esp Blink
+-- Esp Blink Config
 local activeHighlights = {}
 local blinkConnection = nil
 local blinkStartTime = os.clock()
@@ -186,7 +186,7 @@ end
 roomdir.ChildAdded:Connect(onRoomGen)
 roomdir.ChildRemoved:Connect(onRoomDestroy)
 
---Player Highlights
+-- Player Highlights
 local playerlist = workspace.InGamePlayers:GetChildren()
 for playeridx in playerlist do
 	if playerlist[playeridx].Name == plr.Name then
@@ -206,32 +206,32 @@ for playeridx in playerlist do
 	frame.Position = UDim2.new(0.35,0,0.6,0)
 	frame.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
 
-	--新建垂直布局
+	-- UI Layout Config
 	local mainLayout = Instance.new("UIListLayout", frame)
 	mainLayout.FillDirection = Enum.FillDirection.Vertical
 	mainLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
 	mainLayout.VerticalAlignment = Enum.VerticalAlignment.Center
 	mainLayout.SortOrder = Enum.SortOrder.LayoutOrder
 	mainLayout.Padding = UDim.new(0, 0)
-	--上行：心和体力
+	-- Healthbar
 	local heartRow = Instance.new("Frame", frame)
 	heartRow.Size = UDim2.new(1,0,0.5,0)
 	heartRow.BackgroundTransparency = 1
 	heartRow.BackgroundColor3 = Color3.fromRGB(0, 255, 0)
-	--上行：间隔
+	-- spacingg separating this for my ease
 	local layout = Instance.new("UIListLayout", heartRow)
 	layout.FillDirection = Enum.FillDirection.Horizontal
 	layout.HorizontalAlignment = Enum.HorizontalAlignment.Center
 	layout.VerticalAlignment = Enum.VerticalAlignment.Center
 	layout.SortOrder = Enum.SortOrder.LayoutOrder
 	layout.Padding = UDim.new(0.05, 0)
-	--下行：slot
+	-- Inventory Slots
 	local slotRow = Instance.new("Frame", frame)
 	slotRow.Size = UDim2.new(1,0,0.5,0)
 	slotRow.BackgroundTransparency = 1
 	slotRow.BackgroundColor3 = Color3.fromRGB(0, 0, 255)
 	
-	--心的显示
+	-- Hearts for uh healthbar
 	local textlabel = Instance.new("TextLabel", heartRow)
 	textlabel.Size=UDim2.new(1.5,0,1.5,0)
 	textlabel.Position=UDim2.new(-0.25,0,0,0)
@@ -256,7 +256,7 @@ for playeridx in playerlist do
 		print("new life "..health)
 	end)
 	
-	--体力数值显示
+	-- Staminaaa
     local Staminatextlabel = Instance.new("TextLabel", heartRow)
 	Staminatextlabel.Size=UDim2.new(1,0,1,0)
 	Staminatextlabel.Position=UDim2.new(-0.25,0,0,0)
@@ -280,9 +280,9 @@ for playeridx in playerlist do
 	UpdateStamina()
 	playerentity.Stats.CurrentStamina:GetPropertyChangedSignal("Value"):Connect(UpdateStamina)
 
-	--slot的显示
+	-- actual inventory display
 	local playerslotlist=playerentity.Inventory:GetChildren()
-	-- 横向居中布局（只建一次）
+	-- UI organization stuff yes
 	local layout = Instance.new("UIListLayout", slotRow)
 	layout.FillDirection = Enum.FillDirection.Horizontal
 	layout.HorizontalAlignment = Enum.HorizontalAlignment.Center
@@ -291,7 +291,7 @@ for playeridx in playerlist do
 	layout.Padding = UDim.new(0, 0)
 
 	for slotidx, slotValue in ipairs(playerslotlist) do
-	    -- 每个 slot 的圆形底
+	    -- The cirle thingies for inventory separating for ease of use
 	    local slotCircle = Instance.new("ImageLabel", slotRow)
 	    slotCircle.Size = UDim2.new(0.5, 0, 1, 0)
 	    slotCircle.BackgroundTransparency = 1
@@ -299,7 +299,7 @@ for playeridx in playerlist do
 	    slotCircle.ImageColor3 = Color3.fromRGB(55, 55, 55)
 		slotCircle.ScaleType = Enum.ScaleType.Fit
 
-	    -- 物品图标
+	    -- C i r c l e
 	    local icon = Instance.new("ImageLabel", slotCircle)
 	    icon.Size = UDim2.new(1, 0, 1, 0)
 	    icon.Position = UDim2.new(0, 0, 0, 0)
@@ -401,7 +401,7 @@ function disablelooprunspeed()
 	print("disablelooprunspeed:done")
 end
 
---remove sprint event on client event
+-- Kill sprint when client event yes
 for i, connection in pairs(getconnections(sprintevent.OnClientEvent)) do
     print("disable sprintevent.OnClientEvent")
     connection:Disable()
@@ -488,7 +488,7 @@ end)
 --local cb = getcallbackvalue(RF, "OnClientInvoke");
 local skillcheckupdate = replicated.Events:WaitForChild("SkillcheckUpdate")
 local oriskillcheckupdate = nil
-print("Fjone: try Hooking SkillcheckUpdate...")
+print("Abstract: try Hooking SkillcheckUpdate...")
 local retry=5
 while oriskillcheckupdate == nil and retry>0 do
     if getcallbackvalue ~= nil then
@@ -511,7 +511,7 @@ skillcheckupdate.OnClientInvoke = function(...)
         print("[SkillcheckUpdate] oriskillcheckupdate is still nil")
     end
 
-	--for normal and circle machine, it should be supercomplete
+	--for normal and circle machine, it should be autoskillcheck
 	--for treadmill tap, it should be true
 	local arg2 = select(2, ...)
 	print("arg2 typeof is "..typeof(arg2))
@@ -520,18 +520,18 @@ skillcheckupdate.OnClientInvoke = function(...)
 		    print("it is treadmill, return true")
 		    return true
 		elseif arg2.type == "circle" then
-		    print("it is circle machine, return supercomplete")
-		    return "supercomplete"
+		    print("it is circle machine, return autoskillcheck")
+		    return "autoskillcheck"
 		else
 		    print("arg2.type is "..arg2.type)
 		    return true
 		end
 	else
-		print("it is normal machine, return supercomplete")
-		return "supercomplete"
+		print("it is normal machine, return autoskillcheck")
+		return "autoskillcheck"
 	end
 end
-print("Fjone: Hooking SkillcheckUpdate Success...")
+print("Abstract: Hooking SkillcheckUpdate Success...")
 
 local function getsiblings(part)
     if part.Parent then
@@ -539,43 +539,49 @@ local function getsiblings(part)
     end
 end
 
---barnaby machine (thx qwel)
+-- barnaby machine (thx qwel)
 loadstring(game:HttpGet("https://raw.githubusercontent.com/christmas-cookie/extensions/refs/heads/main/arcademachine", true))()
 
---open all the light
-local function setLightRange(root, range)
-    if not root then return end
-    for _, inst in ipairs(root:GetDescendants()) do
-        if inst:IsA("Light") then
-            inst.Range = range
-            for _, lightpart in ipairs(getsiblings(inst.Parent)) do
-                if lightpart.Material == Enum.Material.Neon then
-                    lightpart.Color = Color3.fromRGB(255, 255, 204)
-                end
+-- Fullbright second attempt
+local function SetFullbright(enabled)
+    if enabled then
+        lighting.Ambient = Color3.fromRGB(255, 255, 255)
+        lighting.OutdoorAmbient = Color3.fromRGB(255, 255, 255)
+        lighting.Brightness = 10
+        lighting.FogEnd = 100000
+        lighting.FogStart = 100000
+        -- Disable any atmosphere/blur effects
+        for _, effect in ipairs(lighting:GetChildren()) do
+            if effect:IsA("Atmosphere") or effect:IsA("BlurEffect") or effect:IsA("ColorCorrectionEffect") then
+                effect.Enabled = false
             end
         end
+    else
+        -- restore defaults if needed
+        lighting.Ambient = Color3.fromRGB(0, 0, 0)
+        lighting.OutdoorAmbient = Color3.fromRGB(127, 127, 127)
+        lighting.Brightness = 1
+        lighting.FogEnd = 100000
     end
 end
 
-local function OpenLight()
-    if lighting.FogEnd == 250 then
-        print("light back")
-        return
+SetFullbright(true)
+
+-- Re-apply when fog changes (since the game tries to reset it)
+lighting:GetPropertyChangedSignal("FogEnd"):Connect(function()
+    if lighting.FogEnd ~= 100000 then
+        SetFullbright(true)
     end
-    task.wait(5)
-    if roomentity ~= nil then
-        lighting.FogEnd=250
-        local roomlights=roomentity:WaitForChild("Lights")
-        --open all the light
-        setLightRange(roomlights, 45)
-        print("set All Light to normal")
+end)
+
+lighting:GetPropertyChangedSignal("Ambient"):Connect(function()
+    if lighting.Ambient ~= Color3.fromRGB(255,255,255) then
+        SetFullbright(true)
     end
-end
-
-lighting:GetPropertyChangedSignal("FogEnd"):Connect(OpenLight)
+end)
 
 
--- auto struggle from riddance club
+-- Auto Struggle 100% didn't rip from Riddance trust
 local TwistedSquirmGrabremote = replicated:WaitForChild("Events"):WaitForChild("TwistedSquirmGrab")
 
 local autostrugglerunning = false
