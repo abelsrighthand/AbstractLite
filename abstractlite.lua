@@ -281,16 +281,16 @@ end)
 local skillcheckupdate = replicated.Events:WaitForChild("SkillcheckUpdate")
 local oriskillcheckupdate = nil
 print("Abstract: try Hooking SkillcheckUpdate...")
-local retry = 5
-while oriskillcheckupdate == nil and retry > 0 do
-	if getcallbackvalue ~= nil then
-		oriskillcheckupdate = getcallbackvalue(skillcheckupdate, "OnClientInvoke")
-	end
-	task.wait(1)
-	retry = retry - 1
-end
+--local retry = 5
+--while oriskillcheckupdate == nil and retry > 0 do
+--	if getcallbackvalue ~= nil then
+--		oriskillcheckupdate = getcallbackvalue(skillcheckupdate, "OnClientInvoke")
+--	end
+--	task.wait(1)
+--	retry = retry - 1
+--end
 
-skillcheckupdate.OnClientInvoke = function(...)
+--[[skillcheckupdate.OnClientInvoke = function(...)
 	local args = { ... }
 	local result
 	print("[SkillcheckUpdate] args:", unpack(args))
@@ -325,6 +325,7 @@ local function getsiblings(part)
 		return part.Parent:GetChildren()
 	end
 end
+]]--
 
 -- Barnaby Machine Autoskillcheck (thx qwel)
 loadstring(game:HttpGet("https://raw.githubusercontent.com/christmas-cookie/extensions/refs/heads/main/arcademachine", true))()
