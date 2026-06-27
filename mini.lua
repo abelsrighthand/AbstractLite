@@ -21,15 +21,14 @@ local itemblacklist = {
 	"StaminaCandy",
 	"StealthCandy",
 	"Stopwatch",
-	"Tape",
 	"ResearchCapsule",
 	"Pop",
 	"EjectButton",
 	"SmokeBomb",
 }
 
+	-- Sprout Tendril ESP
 local function onAdded(item)
-	-- Sprout Tendril Highlight
 	if item.Parent.Name=="FreeArea" and item.Name~="SproutTendril" then
 		return
 	end
@@ -38,6 +37,7 @@ local function onAdded(item)
 		return
 	end
 
+	-- Item Blacklist Handler
 	for blackidx in itemblacklist do
 		if item.Name == itemblacklist[blackidx] then
 			return nil
@@ -47,6 +47,7 @@ local function onAdded(item)
 	local highlighteffect = Instance.new("Highlight", item)
 	highlighteffect.Name = "AbstractHighlight"
 
+	-- Generator ESP
 	if item.Name == "Generator" then
 		if item:FindFirstChild("Stats") and item.Stats:FindFirstChild("Completed").Value == true then
 			highlighteffect:Destroy()
@@ -63,6 +64,7 @@ local function onAdded(item)
 		end
 		item.Stats:FindFirstChild("Completed"):GetPropertyChangedSignal("Value"):Connect(onGenComplete)
 
+		-- Item ESP
 	elseif item.Parent.Name == "Items" then
 		local color = Color3.fromRGB(30, 144, 255)
 		if item.Name == "Bandage" or item.Name == "HealthKit" then
@@ -73,6 +75,7 @@ local function onAdded(item)
 		highlighteffect.OutlineColor = color
 		highlighteffect.FillColor = color
 
+		--Player ESP
 	elseif item.Parent.Name == "InGamePlayers" then
 		highlighteffect.OutlineTransparency = 1
 		highlighteffect.FillTransparency = 0.5
@@ -93,6 +96,7 @@ local function onAdded(item)
 	startBlinkLoop()
 end
 
+	-- Room ESP Handler
 local function Abstract_HighLight(room, foldername)
 	print("Current Floor Name is "..room.Name)
 	local dir = room:WaitForChild(foldername)
@@ -116,7 +120,7 @@ local function highlightmonstereffect(parent)
 	}
 end
 
--- Blot Hands Highlight
+-- Blot Hands ESP
 local function highlightblothand(hand)
 	print("hand is "..hand.Name)
 	local arm = hand:WaitForChild("Arm")
@@ -168,7 +172,7 @@ end
 roomdir.ChildAdded:Connect(onRoomGen)
 roomdir.ChildRemoved:Connect(onRoomDestroy)
 
--- Player Highlights
+-- Player ESP Handler
 local playerlist = workspace.InGamePlayers:GetChildren()
 for playeridx in playerlist do
 	if playerlist[playeridx].Name == plr.Name then
@@ -301,7 +305,7 @@ userinputservice.InputEnded:Connect(function(inputobj, processevent)
 	end
 end)
 
--- Auto skillcheck
+-- Anti-Fail Skillcheck
 	-- Old AutoSC modules for later reference
 		--local TreadmillTapSkillCheck_upvr_2 = require(game.ReplicatedStorage.Modules.TreadmillTapSkillCheck)
 		--local CircleSkillCheckHandler_upvr = require(ReplicatedStorage_upvr.Modules.CircleSkillCheckHandler)
@@ -356,7 +360,7 @@ local function getsiblings(part)
 	end
 end
 
--- barnaby machine (thx qwel)
+-- Barnaby Machine Autoskillcheck (thx qwel)
 loadstring(game:HttpGet("https://raw.githubusercontent.com/christmas-cookie/extensions/refs/heads/main/arcademachine", true))()
 
 -- Fullbright
@@ -423,7 +427,7 @@ task.spawn(function()
 	end
 end)
 
--- Anti-Lag version 1 testing
+-- Anti-Lag
 local function applyAntiLag(part)
     if part:IsA("BasePart") then
         part.Material = Enum.Material.SmoothPlastic
