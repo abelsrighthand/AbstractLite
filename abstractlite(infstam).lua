@@ -5,9 +5,6 @@ local plr = plrsrv.LocalPlayer
 local localcharacter = plr.Character or plr.CharacterAdded:Wait()
 local plrgui = plr:WaitForChild("PlayerGui")
 local screengui = plrgui:FindFirstChild("ScreenGui")
-local RunService = game:GetService("RunService")
-local lighting = game:GetService("Lighting")
-print("player name is "..plr.Name)
 
 -- Inf Stam
 local sprintevent = replicated.Events:WaitForChild("SprintEvent")
