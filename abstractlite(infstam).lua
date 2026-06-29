@@ -104,3 +104,24 @@ userinputservice.InputEnded:Connect(function(inputobj, processevent)
 		isprocessed = false
 	end
 end)
+
+-- PC support methinks?
+userinputservice.InputBegan:Connect(function(inputobj, processevent)
+	if processevent then return end
+	if inputobj.KeyCode == Enum.KeyCode.LeftShift then
+		enablelooprunspeed()
+		serversidesprint = true
+		sprintevent:FireServer(true)
+		print("shift sprint begin")
+	end
+end)
+
+userinputservice.InputEnded:Connect(function(inputobj, processevent)
+	if processevent then return end
+	if inputobj.KeyCode == Enum.KeyCode.LeftShift then
+		disablelooprunspeed()
+		sprintevent:FireServer(false)
+		serversidesprint = false
+		print("shift sprint end")
+	end
+end)
